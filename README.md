@@ -326,11 +326,16 @@ Below are photos demonstrating all 8 operations of the ALU running on the DE2-11
 
 ### Timing Analysis Results (New — CLA Optimization)
 
-If you added screenshots of the Fmax comparison and logic-element counts from Quartus (see [Results](#results) above), reference them here the same way, e.g.:
+TimeQuest Fmax Summary, Slow 1200mV 85°C model, `alu_8bit` as top-level with the virtual-clock SDC:
 
-```markdown
-![Fmax Comparison](images/fmax_comparison.png)
-*Fmax Summary: 0.84 MHz (original) vs 32.96 MHz (CLA-optimized)*
-```
+**Optimized (`alu_cla.v`):**
 
----
+![Fmax - CLA version](images/fmax_cla.png)
+
+*Fmax Summary for the CLA-optimized ALU core: 32.96 MHz*
+
+**Original (`alu.v`):**
+
+![Fmax - original version](images/fmax_original.png)
+
+*Fmax Summary for the original ripple-carry ALU core: 0.84 MHz*

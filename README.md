@@ -24,35 +24,34 @@ Both versions have identical top-level ports and are drop-in replacements for ea
 
 ## Architecture
 
-### Module Hierarchy
-
-**Original (`alu.v`):**
 ```
-alu (Top Module)
-├── alu_8bit (8-bit ALU Core)
-│   ├── add_sub_8bit (Ripple-carry Adder/Subtractor)
-│   │   └── full_adder (1-bit Full Adder, chained x8)
-│   ├── logic_unit (Logic Operations)
-│   ├── multiplier (Behavioral shift-add, for-loop)
-│   └── divider (Behavioral repeated subtraction, for-loop, up to 255 iterations)
-├── bin_to_ascii (Binary to ASCII Converter)
-└── lcd_controller (LCD Display Driver)
-```
-
-**Optimized (`alu_cla.v`):**
-```
-alu (Top Module)
-├── alu_8bit (8-bit ALU Core)
-│   ├── add_sub_8bit (CLA-based Adder/Subtractor)
-│   │   └── cla_adder_8bit (Two 4-bit CLA blocks + block-level lookahead)
-│   │       └── cla_4bit (x2 — generate/propagate carry logic)
-│   ├── logic_unit (Logic Operations, unchanged)
-│   ├── multiplier_cla (Structural shift-add array multiplier)
-│   │   └── cla_adder_16bit (x8 — one per partial-product accumulation stage)
-│   └── divider_cla (Structural restoring divider, 8 stages)
-│       └── add_sub_9bit_cla (x8 — CLA-based subtract/compare per stage)
-├── bin_to_ascii (Binary to ASCII Converter, unchanged)
-└── lcd_controller (LCD Display Driver, unchanged)
+repo_structure/
+├── original/
+│   ├── full_adder.v
+│   ├── add_sub_8bit.v
+│   ├── logic_unit.v
+│   ├── multiplier.v
+│   ├── divider.v
+│   ├── alu_8bit.v
+│   ├── bin_to_ascii.v
+│   ├── lcd_controller.v
+│   └── alu.v              (top-level)
+├── cla/
+│   ├── cla_4bit.v
+│   ├── cla_adder_8bit.v
+│   ├── cla_adder_16bit.v
+│   ├── add_sub_9bit_cla.v
+│   ├── add_sub_8bit.v
+│   ├── logic_unit.v         (identical to original — kept here so this folder is self-contained)
+│   ├── multiplier.v
+│   ├── divider.v
+│   ├── alu_8bit.v
+│   ├── bin_to_ascii.v       (identical to original)
+│   ├── lcd_controller.v     (identical to original)
+│   ├── alu.v               (top-level)
+│   └── alu_8bit_timing.sdc
+└── sim/
+    └── tb_alu_cla.v
 ```
 
 ### Supported Operations
